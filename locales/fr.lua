@@ -4,7 +4,7 @@ Locales['fr'] = {
 	['vault']						= 'Coffre',
 	['get_object']					= 'Prendre Objet',
 	['put_object']					= 'Déposer Objet',
-	['society_stock']				= 'Stock du Yellow Jack Inn',
+	['society_stock']				= 'Stock du Yellow Jack',
 	['inventory']					= 'Inventaire',
 	['quantity']					= 'Quantité',
 	['invalid_quantity']			= 'Quantité invalide',
@@ -16,7 +16,7 @@ Locales['fr'] = {
 	-- Fridge
 	['fridge']						= 'Frigo',
 	['open_fridge']					= 'Appuyez sur ~INPUT_CONTEXT~ pour accéder au frigo',
-	['fridge_stock']				= 'Frigo du Yellow Jack Inn',
+	['fridge_stock']				= 'Frigo du Yellow Jack',
 
 	-- Vehicles
 	['vehicle_menu']				= 'Véhicules',
@@ -29,26 +29,26 @@ Locales['fr'] = {
 	['no_players_nearby']			= 'Aucun joueur à proximité',
 	['billing_amount']				= 'Montant de la facture',
 	['invalid_amount']				= 'Montant invalide',
-	['society_name_billing']		= 'Yellow Jack Inn',
+	['society_name_billing']		= 'Yellow Jack',
 
 	-- Boss Menu
 	['open_bossmenu']				= 'Appuyez sur ~INPUT_CONTEXT~ pour ouvrir la ~h~~m~gestion de l\'entreprise~s~',
 	['boss_required']				= '~r~Vous n\'avez pas accès à la gestion de l\'entreprise...~s~',
 
 	-- Harvesting
-	['menu_harvest']				= 'Appuyez sur ~INPUT_CONTEXT~ pour ~h~~m~récupérer les fûts de whisky~s~',
+	['menu_harvest']				= 'Appuyez sur ~INPUT_CONTEXT~ pour ~h~~m~récupérer une caisse de whisky~s~',
 	['menu_harvest_title']			= 'Marchandises importées',
-	['get_barrel_harvest']			= 'Récupérer un fût de whisky',
-	['put_barrel_harvest']			= 'Déposer un fût de whisky',
-	['already_have_barrel']			= '~r~Vous avez déjà un fût de whisky~s~',
-	['dont_have_barrel']			= '~r~Vous n\'avez pas de fût de whisky~s~',
+	['get_barrel_harvest']			= 'Récupérer une caisse de whisky',
+	['put_barrel_harvest']			= 'Déposer une caisse de whisky',
+	['already_have_barrel']			= '~r~Vous avez déjà une caisse de whisky~s~',
+	['dont_have_barrel']			= '~r~Vous n\'avez pas de caisse de whisky~s~',
 	['no_farming_in_vehicle']		= 'Il est difficile de faire quelque chose en restant dans son ~r~véhicule~w~ !',
 	['vehicle_too_close']			= '~o~Votre véhicule est trop proche...~s~',
-	['barrels_inside_vehicle']		= 'Fûts de whisky [%s/%s]',
-	['barrels_inside_vehicle_0']	= 'Fûts de whisky [~r~%s~s~/%s]',
-	['barrels_inside_vehicle_5']	= 'Fûts de whisky [~g~%s~s~/%s]',
-	['press_E_to_put']				= '[~g~E~s~] Déposer un fût de whisky',
-	['press_E_to_get']				= '[~g~E~s~] Récupérer un fût de whisky',
+	['barrels_inside_vehicle']		= 'Caisses de whisky [%s/%s]',
+	['barrels_inside_vehicle_0']	= 'Caisses de whisky [~r~%s~s~/%s]',
+	['barrels_inside_vehicle_5']	= 'Caisses de whisky [~g~%s~s~/%s]',
+	['press_E_to_put']				= '[~g~E~s~] Déposer une caisse de whisky',
+	['press_E_to_get']				= '[~g~E~s~] Récupérer une caisse de whisky',
 
 	-- Transforming
 	['menu_transfo']				= 'Appuyez sur ~INPUT_CONTEXT~ pour ~h~~m~mettre en bouteille~s~',
@@ -62,7 +62,7 @@ Locales['fr'] = {
 	['comp_earned']					= 'Votre société a gagné un montant de $~g~%s~s~',
 
 	-- Misc
-	['map_blip']					= 'Yellow Jack Inn',
+	['map_blip']					= 'Yellow Jack',
 	['society_harvest']				= 'Port de marchandises',
 	['society_sell']				= 'Supermarché',
 

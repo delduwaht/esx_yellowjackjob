@@ -7,8 +7,8 @@ ESX.RegisterServerCallback('esx_yellowjackjob:RequestJobVehiclesInfos', function
 	cb(Vehicles)
 end)
 
-TriggerEvent('esx_addons_gcphone:registerNumber', 'yellowjack', 'Yellow Pearl', true, true)
-TriggerEvent('esx_society:registerSociety', 'yellowjack', 'Yellow Pearl', 'society_yellowjack', 'society_yellowjack', 'society_yellowjack', {type = 'private'})
+TriggerEvent('esx_addons_gcphone:registerNumber', 'yellowjack', 'Yellow Jack', true, true)
+TriggerEvent('esx_society:registerSociety', 'yellowjack', 'Yellow Jack', 'society_yellowjack', 'society_yellowjack', 'society_yellowjack', {type = 'private'})
 
 
 RegisterServerEvent('esx_yellowjackjob:getStockItem')
@@ -149,14 +149,14 @@ AddEventHandler('esx_yellowjackjob:UpdateServerJobVehiclesTable', function(plate
 	end
 
 	for k,v in pairs(Vehicles) do
-		if Vehicles[k] == plate then 
+		if Vehicles[k] == plate then
 			found = true
 			if quantity ~= v.quantity then
 				table.remove(Vehicles, k)
 				Vehicles[k] = { quantity = quantity, maximum = Config.QuantityMaximumInVehicle }
 				TriggerClientEvent('esx_yellowjackjob:ReturnJobVehiclesFromServerTable', -1, Vehicles)
 			end
-			break 
+			break
 		end
 	end
 
@@ -189,7 +189,7 @@ AddEventHandler('esx_yellowjackjob:startSelling', function()
 
 	local xPlayer			= ESX.GetPlayerFromId(_source)
 	local alcoholQuantity 	= xPlayer.getInventoryItem('whisky').count
-	
+
 	if alcoholQuantity == 0 then
 		TriggerClientEvent('esx:showNotification', _source, _U('not_enough_alcohol_sell'))
 	else

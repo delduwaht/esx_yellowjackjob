@@ -1,11 +1,15 @@
 SET @job_name = 'yellowjack';
 SET @society_name = 'society_yellowjack';
-SET @job_Name_Caps = 'Yellow Pearl';
+SET @job_Name_Caps = 'Yellow Jack';
 
 DELETE FROM items WHERE name = 'whisky';
+DELETE FROM addon_account WHERE name = @society_name ;
+DELETE FROM addon_inventory WHERE name = @society_name ;
+DELETE FROM addon_inventory WHERE name = 'society_yellowjack_fridge' ;
 DELETE FROM addon_inventory_items WHERE name NOT IN (SELECT name FROM items);
-DELETE FROM jobs WHERE name = 'yellowjack';
-DELETE FROM job_grades WHERE job_name = 'yellowjack';
+DELETE FROM datastore WHERE name = @society_name ;
+DELETE FROM jobs WHERE name = @job_name;
+DELETE FROM job_grades WHERE job_name = @job_name;
 /*
 UPDATE users
 SET job = 'unemployed', job_grade = 0
@@ -17,7 +21,8 @@ INSERT INTO `addon_account` (name, label, shared) VALUES
 ;
 
 INSERT INTO `addon_inventory` (name, label, shared) VALUES
-	(@society_name, @job_Name_Caps, 1)
+	(@society_name, @job_Name_Caps, 1),
+	('society_yellowjack_fridge', 'Yellow Jack (frigo)', 1)
 ;
 
 INSERT INTO `datastore` (name, label, shared) VALUES

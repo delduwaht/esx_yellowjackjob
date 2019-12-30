@@ -23,6 +23,7 @@ local vehicleNearPlayer, currentJobPlate = nil, nil
 local currentlyBusy, barrelTaken = false, false
 local jobVehicles = {}
 local jobVehicleHash = GetHashKey('"'..Config.JobVehicleName..'"') -- bobcatxl
+local barrelEntityObject = GetHashKey('"'..Config.barrelEntityName..'"')
 
 ESX = nil
 
@@ -208,12 +209,12 @@ function OpenVehicleSpawnerMenu()
 	ESX.UI.Menu.CloseAll()
 
 	local elements = {}
-	
+
 	for i=1, #Config.AuthorizedVehicles, 1 do
 		local vehicle = Config.AuthorizedVehicles[i]
 		table.insert(elements, {label = vehicle.label, value = vehicle.name})
 	end
-		
+
 	ESX.UI.Menu.Open(
 		'default', GetCurrentResourceName(), 'vehicle_spawner',
 		{
@@ -605,39 +606,37 @@ function GetAlcoholBarrel()
 	currentlyBusy = true
 
 	local playerPed = PlayerPedId()
-	if not HasAnimDictLoaded("anim@heists@narcotics@trash") then
-		RequestAnimDict("anim@heists@narcotics@trash") 
+	if not HasAnimDictLoaded("anim@heists@box_carry@") then
+		RequestAnimDict("anim@heists@box_carry@")
 	end
-	while not HasAnimDictLoaded("anim@heists@narcotics@trash") do 
+	while not HasAnimDictLoaded("anim@heists@box_carry@") do
 		Citizen.Wait(0)
 	end
 	TaskStartScenarioInPlace(playerPed, "PROP_HUMAN_BUM_BIN", 0, true)
 	Citizen.Wait(4000)
 	ClearPedTasks(playerPed)
-	alcoholBarrel = CreateObject(GetHashKey("prop_cs_street_binbag_01"), 0, 0, 0, true, true, true) -- creates object
-	AttachEntityToEntity(alcoholBarrel, playerPed, GetPedBoneIndex(playerPed, 57005), 0.4, 0, 0, 0, 270.0, 60.0, true, true, false, true, 1, true) -- object is attached to right hand    
+	Citizen.Wait(1000)
+	alcoholBarrel = CreateObject(barrelEntityObject, 0, 0, 0, true, true, true) -- creates object
+	AttachEntityToEntity(alcoholBarrel, playerPed, GetPedBoneIndex(playerPed, 28422), 0.0, -0.03, 0.0, 5.0, 0.0, 0.0, 1, 1, 0, 1, 0, 1)
+
+	TaskPlayAnim(playerPed, "anim@heists@box_carry@", "idle", 8.0, 8.0, -1, 50, 0, false, false, false)
+
+	Citizen.Wait(1000)
 
 	barrelTaken = true
 	currentlyBusy = false
-
-	TaskPlayAnim(playerPed, 'anim@heists@narcotics@trash', 'walk', 1.0, -1.0,-1,49,0,0, 0,0)
 end
 
 function RemoveAlcoholBarrel()
 	currentlyBusy = true
 
 	local playerPed = PlayerPedId()
-	if not HasAnimDictLoaded("anim@heists@narcotics@trash") then
-		RequestAnimDict("anim@heists@narcotics@trash") 
-	end
-	while not HasAnimDictLoaded("anim@heists@narcotics@trash") do 
-		Citizen.Wait(0)
-	end
 	ClearPedTasksImmediately(playerPed)
-	TaskPlayAnim(playerPed, 'anim@heists@narcotics@trash', 'throw_b', 1.0, -1.0,-1,2,0,0, 0,0)
-	Citizen.Wait(800)
+	TaskStartScenarioInPlace(playerPed, "PROP_HUMAN_BUM_BIN", 0, true)
 	DeleteEntity(alcoholBarrel)
+	Citizen.Wait(3000)
 	ClearPedTasks(playerPed)
+	Citizen.Wait(3000)
 
 	barrelTaken = false
 	currentlyBusy = false
@@ -667,9 +666,9 @@ function CheckCollectedBarrels()
 							currentJobPlate = plate
 							local barrelsQuantity = jobVehicles[currentJobPlate].quantity
 							local maximumQuantity = jobVehicles[currentJobPlate].maximum
-							if barrelsQuantity = 0 then
+							if barrelsQuantity == 0 then
 								ESX.Game.Utils.DrawText3D(coordsVehicleNearPlayer + vector3(0.0, 0.0, 1.0), _U('barrels_inside_vehicle_0', barrelsQuantity, maximumQuantity), 1.0)
-							elseif barrelsQuantity = 5 then
+							elseif barrelsQuantity == 5 then
 								ESX.Game.Utils.DrawText3D(coordsVehicleNearPlayer + vector3(0.0, 0.0, 1.0), _U('barrels_inside_vehicle_5', barrelsQuantity, maximumQuantity), 1.0)
 							else
 								ESX.Game.Utils.DrawText3D(coordsVehicleNearPlayer + vector3(0.0, 0.0, 1.0), _U('barrels_inside_vehicle', barrelsQuantity, maximumQuantity), 1.0)
@@ -706,7 +705,7 @@ end
 function ControlsCollectedBarrels()
 	Citizen.CreateThread(function()
 		while playerWantsToDoTheRun do
-	
+
 			Citizen.Wait(1)
 
 			local playerPed = PlayerPedId()
@@ -729,7 +728,12 @@ function ControlsCollectedBarrels()
 				end
 			else
 				if barrelTaken then
-					RemoveAlcoholBarrel()
+					ClearPedTasksImmediately(playerPed)
+					DeleteEntity(alcoholBarrel)
+					Citizen.Wait(500)
+					ClearPedTasks(playerPed)
+					Citizen.Wait(500)
+					barrelTaken = false
 				end
 				Citizen.Wait(1000)
 			end
@@ -758,19 +762,22 @@ function GetBarrelFromVehicle(savedCurrentJobPlate)
 end
 
 function CreateAlcoholBottle()
-	RemoveAlcoholBarrel()
+	currentlyBusy = true
+
 	local playerPed = PlayerPedId()
-	if not HasAnimDictLoaded("anim@heists@narcotics@trash") then
-		RequestAnimDict("anim@heists@narcotics@trash") 
-	end
-	while not HasAnimDictLoaded("anim@heists@narcotics@trash") do 
-		Citizen.Wait(0)
-	end
+	ClearPedTasksImmediately(playerPed)
 	TaskStartScenarioInPlace(playerPed, "PROP_HUMAN_BUM_BIN", 0, true)
-	Citizen.Wait(4000)
+	DeleteEntity(alcoholBarrel)
+	Citizen.Wait(8000)
 	ClearPedTasks(playerPed)
+
 	local randomBadAlcohol = math.random(1, 20)
 	TriggerServerEvent('esx_yellowjackjob:CreatingAlcoholBottle', randomBadAlcohol)
+
+	Citizen.Wait(1000)
+
+	barrelTaken = false
+	currentlyBusy = false
 end
 
 RegisterNetEvent('esx_yellowjackjob:ReturnJobVehiclesFromServerTable')
@@ -984,10 +991,10 @@ Citizen.CreateThread(function()
 						if not barrelTaken then
 							ESX.ShowNotification(_U('dont_have_barrel'))
 						else
-							local coords 	= GetEntityCoords(playerPed)
+							local coords = GetEntityCoords(playerPed)
 							local canTransfo = true
-							if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 8.0) then
-								local warningVehicleClose = GetClosestVehicle(coords.x, coords.y, coords.z, 8.0, 0, 71)
+							if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 5.5) then
+								local warningVehicleClose = GetClosestVehicle(coords.x, coords.y, coords.z, 5.5, 0, 71)
 								if DoesEntityExist(warningVehicleClose) and IsVehicleModel(warningVehicleClose, jobVehicleHash) and GetVehicleEngineHealth(warningVehicleClose) > 0.0 then
 									local warningPlate = GetVehicleNumberPlateText(warningVehicleClose)
 									if jobVehicles[warningPlate] ~= nil then
@@ -1002,7 +1009,7 @@ Citizen.CreateThread(function()
 							end
 						end
 					end
-				
+
 				elseif CurrentAction == 'menu_selling' then
 					TriggerServerEvent('esx_yellowjackjob:startSelling')
 				end
@@ -1035,7 +1042,7 @@ Citizen.CreateThread(function()
 	while true do
 
 		Citizen.Wait(1)
-		
+
 		if IsControlJustReleased(1,	Keys['F6']) and IsJobTrue() and IsInputDisabled(0) then
 			menu_example()
 		end
